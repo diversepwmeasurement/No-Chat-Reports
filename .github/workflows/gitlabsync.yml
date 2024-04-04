@@ -1,19 +1,19 @@
-name: Gitlab Sync
-
-on:
-  - push
-  - delete
-
 jobs:
   sync:
-    runs-on: ubuntu-22.04
     name: Git Repo Sync
+    runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
+    - continue-on-error: true
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - uses: wangchucheng/git-repo-sync@v0.1.0
+    - continue-on-error: true
+      uses: wangchucheng/git-repo-sync@v0.1.0
       with:
+        target-token: ${{ secrets.TARGET_TOKEN }}
         target-url: ${{ secrets.TARGET_URL }}
         target-username: ${{ secrets.TARGET_USERNAME }}
-        target-token: ${{ secrets.TARGET_TOKEN }}
+name: Gitlab Sync
+on:
+  repository_dispatch:
+    types: trigger-ga___gitlabsync.yml
